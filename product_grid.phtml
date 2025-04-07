@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Catalog\Block\Adminhtml\Category\AssignProducts $block */
+/** @var \Magento\Catalog\Block\Adminhtml\Category\Tab\Product $blockGrid */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$blockGrid = $block->getBlockGrid(); 
+$gridJsObjectName = $blockGrid->getJsObjectName();
+?>
+<!-- Render the product grid -->
+<?= $block->getGridHtml() ?>
+
+<!-- Hidden input field to store the selected products in JSON format -->
+<input type="hidden" name="category_products" id="in_category_products" data-form-part="category_form" value="" />
+<input type ="hidden" name="shedule_type" id="sheduled_type" value="product"/>
+ 
+<!-- Initialize Magento catalog/category assign products via x-magento-init -->
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "CSSoft_ContentSheduler/catalog/category/assign-products": {
+                "selectedProducts": <?= !empty($block->getProductsJson()) ? $block->getProductsJson() : '{}' ?>,
+                "gridJsObjectName": <?= !empty($gridJsObjectName) ? json_encode($gridJsObjectName) : '""' ?>
+            }
+        }
+    }
+</script>
+
+
